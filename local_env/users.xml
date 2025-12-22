@@ -1,0 +1,39 @@
+<yandex>
+    <users>
+        <!-- REQUIRED -->
+        <default>
+            <password></password>
+            <networks>
+                <ip>127.0.0.1</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
+        </default>
+
+        <!-- Your admin user -->
+        <admin>
+            <password_sha256_hex>7a96004f5149811c069f40146b08cf45f45087d4530d35f7d4d88d058db9612d</password_sha256_hex>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
+            <access_management>1</access_management>
+        </admin>
+    </users>
+
+    <profiles>
+        <default>
+            <max_memory_usage>0</max_memory_usage>
+        </default>
+    </profiles>
+
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+            </interval>
+        </default>
+    </quotas>
+</yandex>

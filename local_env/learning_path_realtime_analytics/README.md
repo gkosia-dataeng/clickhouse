@@ -1,0 +1,1 @@
+[Real-time Analytics with ClickHouse: Level 1](https://learn.clickhouse.com/learner_course/show/1872073)
