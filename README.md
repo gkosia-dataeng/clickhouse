@@ -1,5 +1,2 @@
-# clickhouse
-Contains learning notes for clickhouse 
-
-## Academy: https://console.clickhouse.cloud/learn
-
+[Real-time Analytics with ClickHouse: Level 1](https://learn.clickhouse.com/learner_course/show/1872073)
+[Real-time Analytics with ClickHouse: Level 2](https://learn.clickhouse.com/learner_modules/list/1896608)
