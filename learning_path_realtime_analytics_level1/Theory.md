@@ -47,7 +47,7 @@
 
 ---
 
-## MergeTree Engine
+### MergeTree Engine
 
 ### Primary Key
 - Every MergeTree table must have a **PRIMARY KEY**
@@ -144,3 +144,24 @@
 - **ReplacingMergeTree**: supports upserts
 - **SharedMergeTree**: ClickHouse Cloud (data in object storage)
 - **ReplicatedMergeTree**: on-prem replication
+
+### Other engines
+- **Memory**: temporary table stored inMemmory
+- **File**: file
+
+#### Cannot queried directly, requiring materialized view to bind them 
+- **S3Queue**: keep track what files have been processed and process the new
+- **Kafka**: consume data from kafka
+- **CDC**: mysql, postgres.. cdc messages
+
+## Module 3: Inserting data
+
+  Input formats: how to interpriter input data (CSVWithNames)
+  Table functions: are functions to connect to external secvices (s3)
+  Table engines: are connectors to external systems (directly query the source) (S3)
+
+
+  ### Clickpipes: 
+
+    Feauture of Clickhouse Cloud
+    Clickpipe: source -> engine -> materialized view -> MergeTree table
