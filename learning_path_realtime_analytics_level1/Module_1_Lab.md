@@ -67,16 +67,29 @@ Review how the table was created:
 ### 8. Create a MergeTree Table
 Create a persistent table using the `MergeTree` engine:
 
-    CREATE TABLE uk_prices_1
+    CREATE TABLE default.uk_prices_1
     (
-        id Nullable(String),
-        price Nullable(String),
-        date DateTime,
-        postcode Nullable(String),
-        ...
+        `id` Nullable(String),
+        `price` Nullable(String),
+        `date` DateTime,
+        `postcode` Nullable(String),
+        `type` Nullable(String),
+        `is_new` Nullable(String),
+        `duration` Nullable(String),
+        `addr1` Nullable(String),
+        `addr2` Nullable(String),
+        `street` Nullable(String),
+        `locality` Nullable(String),
+        `town` Nullable(String),
+        `district` Nullable(String),
+        `county` Nullable(String),
+        `column15` Nullable(String),
+        `column16` Nullable(String)
     )
     ENGINE = MergeTree
-    PRIMARY KEY date;
+    PRIMARY KEY date
+    ORDER BY date
+    SETTINGS index_granularity = 8192
 
 ---
 
