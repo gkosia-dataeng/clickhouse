@@ -221,3 +221,79 @@ Three options for implementing Direct Join:
 - Both tables are sorted by join columns → **Full Sort Merge**  
 - Right table fits in memory → **Parallel Hash** or **Hash**  
 - Otherwise → **Full Sort Merge**, **Grace Hash**, or **Partial Merge**
+
+
+## Deleting and Updating Data
+
+### MUTATION Commands
+- Parts are immutable folders.
+- `DELETE` or `UPDATE` statements are **MUTATION** commands.
+
+Examples:
+- ALTER TABLE mytable DELETE WHERE y != 'active'
+- ALTER TABLE mytable UPDATE y = 'inactive' WHERE y = 'active'
+
+- The command returns immediately but is **not executed immediately**.
+- The client can wait for the mutation to be executed by setting:
+  - `mutations_sync = 1` or `2` (`0` is default).
+- To monitor mutations, use the system view:
+  - `system.mutations`
+- **Primary key columns cannot be updated.**
+
+---
+
+### Lightweight Deletes (happen immediately)
+- DELETE FROM mytable WHERE y != 'active'
+
+Behavior:
+- Deleted rows are marked using a hidden column.
+- `SELECT` statements automatically exclude deleted rows.
+- Deleted rows are physically removed on the next Part merge.
+
+---
+
+### On-the-fly Updates
+- SET apply_mutations_on_fly = 1
+- ClickHouse keeps track of changes and, at query time, returns the updated values.
+
+---
+
+### Deduplicating Data with Table Engines
+**Changes are applied when Parts merge, or at query time using `FINAL`.**
+
+Notes:
+- Using `FINAL` forces all data to a single node and single thread to compute the final result.
+- OPTIMIZE TABLE mytable FINAL forces a merge (compaction).
+
+#### ReplacingMergeTree
+- Removes duplicate entries with the same sort key.
+- Usage: upserts or infrequent updates.
+- The latest row (by ORDER BY key) replaces the current row.
+
+#### CollapsingMergeTree
+- Collapses pairs of rows if all fields in the sort key are equal.
+- Usage: frequent updates.
+
+Engine details:
+- ENGINE = CollapsingMergeTree(sign)
+- `sign` column must be Int8 (values: 1 or -1)
+
+Rules:
+- Row with `sign = 1` represents the current row.
+- To delete a record: insert a row with the same key and `sign = -1`.
+- To update a record: insert:
+  - one row with `sign = -1`
+  - one new row with `sign = 1`
+
+Querying:
+- To get the **current state**, use `FINAL`.
+- In some cases, `FINAL` can be avoided:
+  - Example: if values are always increasing, use `MAX(hits)`.
+
+#### VersionedCollapsingMergeTree
+- Similar to CollapsingMergeTree but includes versioning to handle out-of-order inserts.
+- Usage: frequent parallel updates.
+
+Engine details:
+- ENGINE = VersionedCollapsingMergeTree(sign, version_column)
+- `version_column` is usually a timestamp (e.g., `modified_time`).
