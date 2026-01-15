@@ -1,2 +1,3 @@
 [Real-time Analytics with ClickHouse: Level 1](https://learn.clickhouse.com/learner_course/show/1872073)
 [Real-time Analytics with ClickHouse: Level 2](https://learn.clickhouse.com/learner_modules/list/1896608)
+[Real-time Analytics with ClickHouse: Level 3](https://learn.clickhouse.com/learner_modules/list/1914307)
